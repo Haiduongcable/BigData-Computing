@@ -17,5 +17,5 @@ $ docker-compose up
 
 ```
 $ cd Data_Process
-$ python char_review_point.py
+$ python char_discount_sale.py 
 ```
