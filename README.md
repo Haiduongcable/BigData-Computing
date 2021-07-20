@@ -8,14 +8,14 @@ $ pip install -r requirements.txt
 ```
 
 ## Xây dựng spark cluster
-'''
+```
 $ cd Spark-Cluster
 $ docker-compose up
-'''
+```
 
 ## Thực hiện thống kê dữ liệu
 
-'''
-cd Data_Process
+```
+$ cd Data_Process
 $ python char_review_point.py
-'''
+```
