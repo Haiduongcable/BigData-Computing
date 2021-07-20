@@ -34,8 +34,26 @@ def extract_group_prob(csv_file):
     return product_prob
 
 if __name__ == '__main__':
-    path_folder = "Clean_Data"
+    import matplotlib.pyplot as plt
+    import numpy as np
+    path_folder = "Data_Clean"
     merge_csv = merge_data(path_folder)
-    product_prob = extract_group_prob(merge_csv)
-    print(product_prob)
+    product_count = extract_group_prob(merge_csv)
+    print(product_count)
+
+
+    y = []
+    mylabels = []
+    count = 0
+    for key in product_count.keys():
+        value_prob = product_count[key]
+        y.append(value_prob)
+        mylabels.append(key)
+    y = np.array(y)
+
+    plt.figure(dpi=1500)
+    plt.pie(y, labels = mylabels)
+    plt.legend(title = "Prob:", loc = "upper right", fontsize = 3)
+    plt.show()
+
     

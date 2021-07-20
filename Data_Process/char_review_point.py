@@ -7,24 +7,6 @@ import random
 import pandas as pd
 from matplotlib import pyplot as plt
 
-def convert_data(data):
-    l_convert_data = []
-    reviewcount_groupproductset = {}
-    reviewaverage_groupproductset = {}
-    group_product_count = {}
-    for index, row in data.iterrows():
-        review_average  = row["rating_average"]
-        review_count = row["review_count"]
-        type_product = row["productset_group_name"]
-        if review_count <= 10:
-            value_review = random.randint(11,20000)
-            value_rating = random.uniform(0.5,5.0)
-            row["rating_average"] = value_rating
-            row["review_count"] = value_review
-            l_convert_data.append(row)
-    datacv = pd.DataFrame(l_convert_data)
-    return datacv
-
 
 def extract_review(data):
     l_convert_data = []
@@ -50,14 +32,9 @@ def extract_review(data):
 
 if __name__ == '__main__':
 
-    path_folder = "Clean_Data"
-    merge_csv = merge_data(path_folder)
-    datacv = convert_data(merge_csv)
-    # datacv.to_csv("Clean_Data/concat_dataset.csv", sep='\t', encoding='utf-8')
-    #path_dataset = "Clean_Data/concat_dataset.csv"
-    #data = pd.read_csv(path_dataset, sep='\t', encoding='utf-8')
+    path_folder = "Data_Clean"
+    datacv = merge_data(path_folder)
     reviewaverage_groupproductset, reviewcount_groupproductset = extract_review(datacv)
-    #print(reviewaverage_groupproductset)
     
     name = []
     for key in reviewcount_groupproductset.keys():
@@ -68,11 +45,46 @@ if __name__ == '__main__':
     print(name)
     print(price)
     
-    # fig = plt.figure(figsize =(10, 7))
- 
-    # # Horizontal Bar Plot
-    # plt.bar(name[0:10], price[0:10])
+    fig, ax = plt.subplots(figsize =(16, 9), dpi = 200)
+    # Horizontal Bar Plot
+    ax.barh(name, price)
     
-    # # Show Plot
-    # plt.show()
+    # Remove axes splines
+    for s in ['top', 'bottom', 'left', 'right']:
+        ax.spines[s].set_visible(False)
+    
+    # Remove x, y Ticks
+    ax.xaxis.set_ticks_position('none')
+    ax.yaxis.set_ticks_position('none')
+    
+    # Add padding between axes and labels
+    ax.xaxis.set_tick_params(pad = 5)
+    ax.yaxis.set_tick_params(pad = 10)
+    
+    # Add x, y gridlines
+    ax.grid(b = True, color ='grey',
+            linestyle ='-.', linewidth = 0.5,
+            alpha = 0.2)
+    
+    # Show top values
+    ax.invert_yaxis()
+    
+    # Add annotation to bars
+    for i in ax.patches:
+        plt.text(i.get_width()+0.05, i.get_y()+0.5,
+                str(round((i.get_width()), 2)),
+                fontsize = 10, fontweight ='bold',
+                color ='grey')
+    
+    # Add Plot Title
+    ax.set_title('Group product and their average review point',
+                loc ='left', )
+    
+    # Add Text watermark
+    fig.text(0.9, 0.15, 'Average point', fontsize = 12,
+            color ='grey', ha ='right', va ='bottom',
+            alpha = 0.7)
+    
+    # Show Plot
+    plt.show()
         
